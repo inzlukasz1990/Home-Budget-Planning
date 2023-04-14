@@ -1,0 +1,45 @@
+{% extends "home_budget_planning/base.html" %}
+
+{% block content %}
+      <h2>Receipts</h2>
+      <div class="row">
+        <div class="col-md-12">
+          <h4>Current Month's Balance: {{ balance }}</h4>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Photo</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for receipt in receipts %}
+            <tr>
+              <td>{{ receipt.date }}</td>
+              <td>{{ receipt.description }}</td>
+              <td>{{ receipt.amount }}</td>
+              <td>{{ receipt.category }}</td>
+              <td>
+                {% if receipt.photo %}
+                  <a href="{{ receipt.photo.url }}" target="_blank"><i class="fa fa-picture-o"></i></a>
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>
+                <a href="{% url 'edit_receipt' receipt.id %}">Edit</a> |
+                <a href="{% url 'delete_receipt' receipt.id %}" onclick="return confirm('Are you sure you want to delete this receipt?')">Delete</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p><a href="{% url 'add_receipt' %}">Add Receipt</a></p>
+{% endblock %}
+

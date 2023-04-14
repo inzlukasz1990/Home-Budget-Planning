@@ -1,0 +1,26 @@
+{% extends "home_budget_planning/base.html" %}
+
+{% block content %}
+    <h1>Receipt Categories</h1>
+    <a href="{% url 'add_receipt_category' %}" class="btn btn-primary">Add Receipt Category</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.name }}</td>
+                    <td>
+                        <a href="{% url 'edit_receipt_category' category.id %}" class="btn btn-warning">Edit</a>
+                        <a href="{% url 'delete_receipt_category' category.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this category?')">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

@@ -1,0 +1,9 @@
+{% extends 'home_budget_planning/base.html' %}
+
+{% block content %}
+  <h2>{{ user.username }}'s Profile</h2>
+  <p>Email: {{ user.email }}</p>
+  <p>Bio: {{ user.bio }}</p>
+  <p>Location: {{ user.location }}</p>
+{% endblock %}
+
