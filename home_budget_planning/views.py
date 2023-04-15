@@ -10,6 +10,7 @@ from .forms import ReceiptCategoryForm, ExpenseCategoryForm
 from django.db.models import Sum
 from collections import defaultdict
 import json
+from rest_framework import generics
 
 def get_monthly_balance(receipts, expenses):
     current_month = datetime.datetime.now().month
@@ -206,5 +207,4 @@ def delete_expense_category(request, category_id):
     category = get_object_or_404(ExpenseCategory, pk=category_id)
     category.delete()
     return redirect('expense_categories')
-
 

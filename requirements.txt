@@ -3,4 +3,6 @@ django-bootstrap4
 django-bootstrap-datepicker-plus
 Pillow
 django-crontab
-
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers

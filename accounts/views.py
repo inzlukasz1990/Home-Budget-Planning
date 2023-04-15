@@ -52,4 +52,3 @@ class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
     form_class = SetPasswordForm
     success_url = '/accounts/password_reset_complete/'
 
-
