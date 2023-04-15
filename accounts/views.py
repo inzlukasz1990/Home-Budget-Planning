@@ -9,14 +9,13 @@ from django.contrib.auth.decorators import login_required
 def profile(request):
     return render(request, 'accounts/profile.html', {'user': request.user})
 
-
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
+            password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('home')

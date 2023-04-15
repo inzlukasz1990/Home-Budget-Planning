@@ -1,4 +1,5 @@
 {% load bootstrap4 %}
+{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +13,8 @@
 <body>
     <!-- Bootstrap CSS -->
     {% bootstrap_css %}
+
+    {% include 'home_budget_planning/language_selection.html' %}
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
@@ -55,10 +58,15 @@
     <!-- jQuery and Bootstrap Bundle (includes Popper) -->
     {% bootstrap_javascript jquery='full' %}
 
-    <div class="container mt-4">
-        {% block content %}
-        {% endblock %}
-    </div>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="text-center mt-5">
+        <p>&copy; Home Budget Planning. All rights reserved.</p>
+    </footer>
+
+    {% include 'home_budget_planning/cookie_notification.html' %}
 </body>
 </html>
 

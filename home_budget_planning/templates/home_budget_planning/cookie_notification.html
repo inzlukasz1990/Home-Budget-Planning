@@ -1,0 +1,20 @@
+{% load i18n %}
+
+<div id="cookie-notification" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background-color: #333; color: white; padding: 10px; text-align: center; z-index: 1000;">
+    <p>{% trans "We use cookies to ensure you get the best experience on our website." %} <a href="{% url 'privacy_policy' %}" style="color: #fff; text-decoration: underline;">{% trans "Learn more" %}</a></p>
+    <button id="accept-cookies" style="background-color: #4CAF50; border: none; color: white; padding: 5px 10px; margin-left: 10px; cursor: pointer;">{% trans "Accept" %}</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!localStorage.getItem('cookies_accepted')) {
+            document.getElementById('cookie-notification').style.display = 'block';
+        }
+
+        document.getElementById('accept-cookies').addEventListener('click', function() {
+            localStorage.setItem('cookies_accepted', '1');
+            document.getElementById('cookie-notification').style.display = 'none';
+        });
+    });
+</script>
+

@@ -11,6 +11,9 @@ from django.db.models import Sum
 from collections import defaultdict
 import json
 from rest_framework import generics
+from django.utils import translation
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 def get_monthly_balance(receipts, expenses):
     current_month = datetime.datetime.now().month
@@ -30,11 +33,25 @@ def administrator_required(view_func):
             return HttpResponseForbidden("You do not have permission to access this page.")
     return _wrapped_view
 
+def set_language(request):
+    if request.method == 'POST':
+        language = request.POST.get('language')
+        request.session['LANGUAGE_SESSION_KEY'] = language
+
+        response = HttpResponseRedirect(reverse('home'))
+        return response
+
 def home(request):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     return render(request, 'home_budget_planning/home.html', {})
+
+def privacy_policy(request):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
+    return render(request, 'home_budget_planning/privacy_policy.html')
 
 @login_required
 def add_expense(request):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     if request.method == 'POST':
         form = ExpenseForm(request.POST, request.FILES)
         if form.is_valid():
@@ -48,6 +65,7 @@ def add_expense(request):
 
 @login_required
 def expenses(request):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     expenses = Expense.objects.filter(user=request.user)
     balance = get_monthly_balance(Receipt.objects.filter(user=request.user), expenses)
 
@@ -76,6 +94,7 @@ def expenses(request):
 
 @login_required
 def add_receipt(request):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     if request.method == 'POST':
         form = ReceiptForm(request.POST, request.FILES)
         if form.is_valid():
@@ -89,6 +108,7 @@ def add_receipt(request):
 
 @login_required
 def receipts(request):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     now = datetime.datetime.now()
     current_month_receipts = Receipt.objects.filter(user=request.user, date__month=now.month, date__year=now.year)
     balance = get_monthly_balance(Receipt.objects.filter(user=request.user), Expense.objects.filter(user=request.user))
@@ -97,6 +117,7 @@ def receipts(request):
 
 @login_required
 def edit_expense(request, expense_id):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     expense = get_object_or_404(Expense, pk=expense_id, user=request.user)
     if request.method == 'POST':
         form = ExpenseForm(request.POST, request.FILES, instance=expense)
@@ -115,6 +136,7 @@ def delete_expense(request, expense_id):
 
 @login_required
 def edit_receipt(request, receipt_id):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     receipt = get_object_or_404(Receipt, pk=receipt_id, user=request.user)
     if request.method == 'POST':
         form = ReceiptForm(request.POST, request.FILES, instance=receipt)
@@ -133,6 +155,7 @@ def delete_receipt(request, receipt_id):
 
 @administrator_required
 def receipt_categories(request):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     categories = ReceiptCategory.objects.all()
     return render(request, 'home_budget_planning/receipt_categories.html', {'categories': categories})
 
@@ -151,6 +174,7 @@ def add_receipt_category(request):
 
 @administrator_required
 def edit_receipt_category(request, category_id):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     category = get_object_or_404(ReceiptCategory, pk=category_id)
     if request.method == 'POST':
         form = ReceiptCategoryForm(request.POST, instance=category)
@@ -172,11 +196,13 @@ def delete_receipt_category(request, category_id):
 # Expense Categories Views
 @administrator_required
 def expense_categories(request):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     categories = ExpenseCategory.objects.all()
     return render(request, 'home_budget_planning/expense_categories.html', {'categories': categories})
 
 @administrator_required
 def add_expense_category(request):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     if request.method == 'POST':
         form = ExpenseCategoryForm(request.POST)
         if form.is_valid():
@@ -190,6 +216,7 @@ def add_expense_category(request):
 
 @administrator_required
 def edit_expense_category(request, category_id):
+    translation.activate(request.session.get('LANGUAGE_SESSION_KEY', 'en'))
     category = get_object_or_404(ExpenseCategory, pk=category_id)
     if request.method == 'POST':
         form = ExpenseCategoryForm(request.POST, instance=category)

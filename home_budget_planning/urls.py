@@ -19,5 +19,8 @@ urlpatterns = [
     path('add_expense_category/', views.add_expense_category, name='add_expense_category'),
     path('edit_expense_category/<int:category_id>/', views.edit_expense_category, name='edit_expense_category'),
     path('delete_expense_category/<int:category_id>/', views.delete_expense_category, name='delete_expense_category'),
+
+    path('set_language/', views.set_language, name='set_language'),
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
 ]
 
