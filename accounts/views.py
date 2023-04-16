@@ -4,12 +4,14 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib.auth.decorators import login_required
-
+from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-
+from django.contrib.auth import get_user_model
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
 from .tokens import account_activation_token
 
 @login_required
@@ -19,7 +21,7 @@ def profile(request):
 def send_confirmation_email(user):
     subject = 'Please confirm your email address'
     message_template = 'accounts/email/activation_email.txt'
-    from_email = 'noreply@example.com'
+    from_email = 'budzet@fuszara.pl'
 
     # Generate a token for the user
     token = account_activation_token.make_token(user)
@@ -28,7 +30,7 @@ def send_confirmation_email(user):
     # Render the email message
     message = render_to_string(message_template, {
         'user': user,
-        'domain': 'your-domain.com',  # Replace with your domain
+        'domain': 'budzet.fuszara.pl',  # Replace with your domain
         'uid': uid,
         'token': token,
     })
@@ -42,12 +44,26 @@ def register(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False  # Deactivate the user until the email is confirmed
+            print(send_confirmation_email(user))
             user.save()
-            send_confirmation_email(user)
             return HttpResponse('Please check your email to confirm your registration.')
     else:
         form = CustomUserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = get_user_model().objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return redirect('accounts:login')
+    else:
+        return render(request, 'accounts/activation_invalid.html')
 
 def login_view(request):
     if request.method == 'POST':

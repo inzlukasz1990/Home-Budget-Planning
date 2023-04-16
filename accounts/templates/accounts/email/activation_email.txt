@@ -1,0 +1,5 @@
+Hi {{ user.username }},
+
+Thank you for registering at our website. To confirm your email address and activate your account, please click the link below:
+
+https://{{ domain }}/accounts/activate/{{ uid }}/{{ token }}

@@ -212,9 +212,6 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-APPEND_SLASH = False
-REMOVE_SLASH = True
-
 LANGUAGE_CODE = 'en'
 
 LANGUAGES = [
@@ -225,3 +222,8 @@ LANGUAGES = [
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 
 ALLOWED_HOSTS = ["localhost", "127.0.1.1", "budzet.fuszara.pl"]
+
+STATIC_URL = "static/"
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'uploads'
