@@ -42,7 +42,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.1.1", "budzet.fuszara.pl"]
 
 
 # Application definition
@@ -224,3 +224,4 @@ LANGUAGES = [
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 
+ALLOWED_HOSTS = ["localhost", "127.0.1.1", "budzet.fuszara.pl"]
