@@ -55,6 +55,8 @@
         </div>
     </nav>
 
+    {% bootstrap_javascript jquery='full' %}
+
     <main class="container">
         {% block content %}{% endblock %}
     </main>
@@ -65,7 +67,6 @@
 
     {% include 'home_budget_planning/cookie_notification.html' %}
 
-    {% bootstrap_javascript jquery='full' %}
 </body>
 </html>
 

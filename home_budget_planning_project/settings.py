@@ -73,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'home_budget_planning_project.urls'
@@ -224,6 +225,7 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 ALLOWED_HOSTS = ["localhost", "127.0.1.1", "budzet.fuszara.pl"]
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / 'static'
 
-MEDIA_URL = 'media/'
+MEDIA_URL = 'uploads/'
 MEDIA_ROOT = BASE_DIR / 'uploads'

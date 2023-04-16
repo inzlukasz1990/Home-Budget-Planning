@@ -12,7 +12,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth import get_user_model
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-from .tokens import account_activation_token
+from .tokens import make_token, check_token
 
 @login_required
 def profile(request):
@@ -24,8 +24,8 @@ def send_confirmation_email(user):
     from_email = 'budzet@fuszara.pl'
 
     # Generate a token for the user
-    token = account_activation_token.make_token(user)
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    token = make_token(user)
+    uid = user.pk
 
     # Render the email message
     message = render_to_string(message_template, {
@@ -44,8 +44,8 @@ def register(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False  # Deactivate the user until the email is confirmed
-            print(send_confirmation_email(user))
             user.save()
+            send_confirmation_email(user)
             return HttpResponse('Please check your email to confirm your registration.')
     else:
         form = CustomUserCreationForm()
@@ -53,12 +53,15 @@ def register(request):
 
 def activate(request, uidb64, token):
     try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
+        uid = uidb64
+        print(uid)
         user = get_user_model().objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
         user = None
 
-    if user is not None and account_activation_token.check_token(user, token):
+    print(user)
+
+    if user is not None and check_token(user, token):
         user.is_active = True
         user.save()
         return redirect('accounts:login')
