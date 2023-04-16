@@ -57,7 +57,7 @@ def add_expense(request):
         if form.is_valid():
             expense = form.save(commit=False)
             expense.user = request.user
-            expanse.last_added = expanse.date
+            expense.last_added = expense.date
             expense.save()
             return redirect('expenses')
     else:

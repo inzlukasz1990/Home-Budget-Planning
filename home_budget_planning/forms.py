@@ -22,7 +22,7 @@ class ExpenseCategoryForm(forms.ModelForm):
 class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
-        fields = ['description', 'amount', 'date', 'category', 'photo', 'recurring', 'last_added']
+        fields = ['description', 'amount', 'date', 'category', 'photo', 'recurring']
         widgets = {
             'date': DatePickerInput(format='%Y-%m-%d'), # specify the date format
         }
@@ -30,7 +30,7 @@ class ExpenseForm(forms.ModelForm):
 class ReceiptForm(forms.ModelForm):
     class Meta:
         model = Receipt
-        fields = ['description', 'amount', 'date', 'category', 'photo', 'recurring', 'last_added']
+        fields = ['description', 'amount', 'date', 'category', 'photo', 'recurring']
         widgets = {
             'date': DatePickerInput(format='%Y-%m-%d'), # specify the date format
         }
